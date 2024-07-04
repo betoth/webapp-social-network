@@ -1,7 +1,6 @@
 package routes
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -15,15 +14,18 @@ type Route struct {
 	RequiresAuthentication bool
 }
 
-// Configuration add all routers to router
-func Configuration(router *mux.Router) *mux.Router {
-	fmt.Println("Entrou no ")
+// SetUp add all routers to router
+func SetUp(router *mux.Router) *mux.Router {
 	routes := routesLogin
+	routes = append(routes, routesUser...)
 
 	for _, route := range routes {
 		router.HandleFunc(route.URI, route.Function).Methods(route.Method)
 
 	}
+
+	fileServer := http.FileServer(http.Dir("./assets/"))
+	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fileServer))
 
 	return router
 }
