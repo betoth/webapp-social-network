@@ -2,6 +2,7 @@ package routes
 
 import (
 	"net/http"
+	"webapp-social-network/src/middlewares"
 
 	"github.com/gorilla/mux"
 )
@@ -18,9 +19,17 @@ type Route struct {
 func SetUp(router *mux.Router) *mux.Router {
 	routes := routesLogin
 	routes = append(routes, routesUser...)
+	routes = append(routes, routeHome)
 
 	for _, route := range routes {
-		router.HandleFunc(route.URI, route.Function).Methods(route.Method)
+		if route.RequiresAuthentication {
+			router.HandleFunc(route.URI,
+				middlewares.Logger(middlewares.Authentication(route.Function))).Methods(route.Method)
+
+		} else {
+			router.HandleFunc(route.URI,
+				middlewares.Logger(route.Function)).Methods(route.Method)
+		}
 
 	}
 

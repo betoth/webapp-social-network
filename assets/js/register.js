@@ -15,5 +15,11 @@ function createUser(event){
             nick_name: $('#nick-name').val(),
             password: $('#password').val(),
         }
-    })
+    }).done(function(){
+        alert("User create with sucess");
+
+    }).fail (function(error){
+        console.log(error)
+        alert ("Failed to create user")
+    });
 }

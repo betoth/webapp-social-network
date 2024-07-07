@@ -4,8 +4,9 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"log"
 	"net/http"
+	"webapp-social-network/src/config"
+	"webapp-social-network/src/response"
 )
 
 // CreateUser create a user
@@ -20,15 +21,22 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 		"password":  r.FormValue("password"),
 	})
 	if err != nil {
-		log.Fatal(err)
+		response.JSON(w, http.StatusBadRequest, response.ErrorAPI{Error: err.Error()})
+		return
 	}
 
-	response, err := http.Post("http://localhost:5000/users", "application/json", bytes.NewBuffer(user))
+	url := fmt.Sprintf("%s/users", config.APIURL)
+	resp, err := http.Post(url, "application/json", bytes.NewBuffer(user))
 	if err != nil {
-		log.Fatal(err)
+		response.JSON(w, http.StatusInternalServerError, response.ErrorAPI{Error: err.Error()})
+		return
 	}
-	defer response.Body.Close()
+	defer resp.Body.Close()
 
-	fmt.Println(response.Body)
+	if resp.StatusCode >= 400 {
+		response.TreatStatusCodeError(w, resp)
+		return
+	}
 
+	response.JSON(w, resp.StatusCode, nil)
 }
