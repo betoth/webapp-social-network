@@ -1,0 +1,40 @@
+  
+{{ define "likes" }}
+    <i class="fa-solid fa-heart like-publication" style="cursor: pointer;"></i>
+    <span> {{ .Likes }} </span>
+{{ end }}
+
+{{ define "update"}}
+<a href="/publications/{{ .ID }}/update"><i class="fa-solid fa-pen-to-square"></i></a>
+{{ end }}
+
+{{ define "delete"}}
+<i class="fa-solid fa-trash-can text-danger delete-publication" style="cursor: pointer;"></i></a>
+{{end}}
+
+{{ define "header-publication" }}
+    <h1 class="display-4">{{ .Title }}</h1>
+    <p class="lead">{{ .Content }}</p>
+    <a href="/users/{{ .AuthorID }}">{{ .AuthorNickName }}</a> - {{ .CreatedAt.Format "01/02/2006 3:4" }}
+    <hr class="my-4">
+{{ end }}
+
+  {{ define "self-publication" }}
+    <div class="jumbotron" data-publication-id="{{ .ID }}">
+        {{ template "header-publication" . }}
+        <p>
+            {{ template "likes" . }}
+            {{ template "update" . }}
+            {{ template "delete" . }}
+        </p>
+    </div>
+  {{ end }}
+
+  {{ define "others-publication" }}
+  <div class="jumbotron" data-publication-id="{{ .ID }}">
+    {{ template "header-publication" . }}
+    <p>
+        {{ template "likes" . }}
+    </p>
+</div>
+  {{ end }}

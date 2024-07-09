@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 	"webapp-social-network/src/config"
 
 	"github.com/gorilla/securecookie"
@@ -85,4 +86,16 @@ func Read(r *http.Request) (map[string]string, error) {
 	}
 
 	return cookieValue, nil
+}
+
+// Delete delete value off cookie
+func Delete(w http.ResponseWriter) {
+	http.SetCookie(w, &http.Cookie{
+		Name:     "data",
+		Value:    "",
+		Path:     "/",
+		HttpOnly: true,
+		Expires:  time.Unix(0, 0),
+	})
+
 }

@@ -3,7 +3,7 @@ $('#form-register').on('submit', createUser);
 function createUser(event){
     event.preventDefault();
     if ($('#password').val() != $('#confirm-password').val()){
-        alert("The passwords do not match!");
+        Swal.fire("Ops...", "Passwords do not match!", "error");
     }
 
     $.ajax({
@@ -16,10 +16,24 @@ function createUser(event){
             password: $('#password').val(),
         }
     }).done(function(){
-        alert("User create with sucess");
+        Swal.fire("Success!", "User registered successfully!", "success")
+        .then(function() {
+            $.ajax({
+                url: "/login",
+                method: "POST",
+                data: {
+                    email: $('#email').val(),
+                    password: $('#password').val()
+                }
+            }).done(function() {
+                window.location = "/home";
+            }).fail(function() {
+                Swal.fire("Ops...", "Error authenticating user!", "error");
+            })
+        })
 
     }).fail (function(error){
         console.log(error)
-        alert ("Failed to create user")
+        Swal.fire("Ops...", "Error registering user!", "error");
     });
 }

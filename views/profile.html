@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Social Network - My Profile</title>
+    {{ template "head" }}
+</head>
+
+<body>
+    {{ template "header" }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            My Profile
+                        </h5>
+                        <h6 class="card-subtitle mb-2 text-muted">
+                            {{ .Name }} - {{ .NickName }} - Member Since:
+                            {{ .CreatedAt.Format "02/01/2006" }}
+                        </h6>
+
+                        <p class="card-text">
+                            <a href="#" data-toggle="modal" data-target="#modal-followers">
+                                Followers: {{ len .Followers }}
+                            </a>
+                        </p>
+                        <p class="card-text">
+                            <a href="#" data-toggle="modal" data-target="#modal-following">
+                                Following: {{ len .Following }}
+                            </a>
+                        </p>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <a href="/update-user" class="card-link">
+                                    <button class="btn btn-info">Edit Profile</button>
+                                </a>
+
+                                <a href="/update-password" class="card-link">
+                                    <button class="btn btn-info">Update Password</button>
+                                </a>
+                                <a id="delete-user" class="card-link">
+                                    <button class="btn btn-danger">
+                                        Permanently Delete Account
+                                    </button>
+                                </a>
+                        
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">My Publications</h5>
+                        <p class="card-text">
+                            {{ range .Publications }}
+                                {{ template "self-publication" . }}
+                            {{ else }}
+                                <p class="text-muted text-center">
+                                    No publications yet...
+                                </p>
+                            {{ end }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ template "footer" }}
+
+    {{ template "modal-followers" . }}
+    {{ template "modal-following" . }}
+
+    {{ template "scripts" }}
+    <script src="/assets/js/publications.js"></script>
+    <script src="/assets/js/user.js"></script>
+</body>
+
+</html>
+
+{{ define "modal-followers" }}
+<div class="modal fade" id="modal-followers">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Followers</h2>
+            </div>
+            <div class="modal-body">
+                {{ range .Followers }}
+                    <a href="/users/{{ .ID }}">{{ .NickName }}</a> <br/>
+                {{ else }}
+                    <p class="text-muted text-center">
+                        No followers yet...
+                    </p>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}
+
+{{ define "modal-following" }}
+<div class="modal fade" id="modal-following">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Following</h2>
+            </div>
+            <div class="modal-body">
+                {{ range .Following }}
+                    <a href="/users/{{ .ID }}">{{ .NickName }}</a> <br/>
+                {{ else }}
+                    <p class="text-muted text-center">
+                        Not following anyone yet...
+                    </p>
+                {{ end }}
+            </div>
+        </div>
+    </div>
+</div>
+{{ end }}

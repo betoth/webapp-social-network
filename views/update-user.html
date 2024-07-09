@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Social Network - Edit User</title>
+    {{ template "head" }}
+</head>
+
+<body>
+    {{ template "header" }}
+
+    <div class="container-fluid">
+        <div class="row mt-4">
+            <div class="col-12">
+                <h3>Edit Profile</h3>
+                <form id="update-user">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" 
+                        placeholder="Enter your name" value="{{ .Name }}" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" 
+                        placeholder="Enter your email" value="{{ .Email }}" required="required">
+                    </div>
+                    <div class="form-group">
+                        <label for="nick_name">Nickname</label>
+                        <input type="text" class="form-control" id="nick_name" name="nick_name" 
+                        placeholder="Enter your nickname" value="{{ .NickName }}" required="required">
+                    </div>
+                    <button type="submit" class="btn btn-info">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    {{ template "footer" }}
+    {{ template "scripts" }}
+    <script src="/assets/js/user.js"></script>
+</body>
+
+</html>

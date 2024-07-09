@@ -13,7 +13,8 @@ function login(event){
     }).done(function(){
         window.location = "/home";
     }).fail (function(error){
-        console.log(error)
-        alert ("User or password invalid!")
+        Swal.fire("Ops...", "User or password invalid!", "error");
     });
 }
+
+
